@@ -5,7 +5,8 @@ provider "digitalocean" {
 }
 
 module "vpc" {
-  source      = "git::https://github.com/terraform-do-modules/terraform-digitalocean-vpc.git?ref=0.15"
+  source      = "terraform-do-modules/vpc/digitalocean"
+  version     = "0.15.0"
   name        = "vpc"
   environment = "test"
   label_order = ["environment", "name"]
@@ -17,7 +18,8 @@ module "vpc" {
 
 
 module "ssh_key" {
-  source         = "git::https://github.com/terraform-do-modules/terraform-digitalocean-ssh-key.git?ref=0.15"
+  source         = "terraform-do-modules/ssh-key/digitalocean"
+  version        = "0.15.0"
   key_path       = "~/.ssh/id_rsa.pub"
   key_name       = "devops"
   enable_ssh_key = true
