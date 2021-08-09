@@ -72,7 +72,7 @@ This module has a few dependencies:
 Here is an example of how you can use this module in your inventory structure:
 ```hcl
     module "droplet" {
-      source             = "clouddrove/droplet/digitalocean"
+      source             = "terraform-do-modules/droplet/digitalocean"
       version            = "0.15.0"
       name               = "droplet"
       environment        = "test"
