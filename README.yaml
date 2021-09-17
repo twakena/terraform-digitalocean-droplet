@@ -16,7 +16,7 @@ github_repo: clouddrove/terraform-digitalocean-droplet
 # Badges to display
 badges:
   - name: "Terraform"
-    image: "https://img.shields.io/badge/Terraform-v0.13-green"
+    image: "https://img.shields.io/badge/Terraform-v0.15-green"
     url: "https://www.terraform.io"
   - name: "Licence"
     image: "https://img.shields.io/badge/License-MIT-blue.svg"
@@ -36,15 +36,14 @@ usage : |-
   Here is an example of how you can use this module in your inventory structure:
   ```hcl
       module "droplet" {
-        source             = "clouddrove/droplet/digitalocean"
-        version            = "0.13.0"
+        source             = "terraform-do-modules/droplet/digitalocean"
+        version            = "0.15.0"
         name               = "droplet"
-        application        = "clouddrove"
         environment        = "test"
-        label_order        = ["environment", "application", "name"]
+        label_order        = ["environment", "name"]
         droplet_count      = 1
         region             = "bangalore-1"
-        ssh_keys           =  [module.ssh_key.fingerprint]
+        ssh_keys           = [module.ssh_key.fingerprint]
         vpc_uuid           = module.vpc.id
         droplet_size       = "nano"
         monitoring         = false
