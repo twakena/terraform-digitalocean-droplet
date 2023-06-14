@@ -106,7 +106,7 @@ resource "digitalocean_firewall" "default" {
   depends_on = [digitalocean_droplet.main]
   count      = var.enable_firewall == true && var.enabled == true ? 1 : 0
 
-  name        = module.labels.id
+  name        = format("%s-firewall", module.labels.id)
   droplet_ids = digitalocean_droplet.main[*].id
 
   dynamic "inbound_rule" {
