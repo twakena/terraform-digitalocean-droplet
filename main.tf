@@ -100,7 +100,6 @@ resource "digitalocean_floating_ip_assignment" "main" {
 #Description :  Provides a DigitalOcean Cloud Firewall resource. This can be used to create, modify, and delete Firewalls.
 ##--------------------------------------------------------------------------------------------------------------------------
 
-#tfsec:ignore:digitalocean-compute-no-public-ingress   ## because by default we use ["0.0.0.0/0"], can't use on prod env.
 #tfsec:ignore:digitalocean-compute-no-public-egress    ## The port is exposed for ingress from the internet, by default we use  ["0.0.0.0/0", "::/0"].
 resource "digitalocean_firewall" "default" {
   depends_on = [digitalocean_droplet.main]
@@ -110,12 +109,11 @@ resource "digitalocean_firewall" "default" {
   droplet_ids = digitalocean_droplet.main[*].id
 
   dynamic "inbound_rule" {
-    iterator = port
-    for_each = var.allowed_ports
+    for_each = var.inbound_rules
     content {
-      port_range       = port.value
-      protocol         = var.protocol
-      source_addresses = var.allowed_ip
+      port_range       = inbound_rule.value.allowed_ports
+      protocol         = lookup(inbound_rule.value, "protocol", "tcp")
+      source_addresses = inbound_rule.value.allowed_ip
     }
   }
 

@@ -38,22 +38,24 @@ usage : |-
       module "droplet" {
         source             = "terraform-do-modules/droplet/digitalocean"
         version            = "0.15.0"
-        name               = "app"
-        environment        = "test"
+        name               = local.name
+        environment        = local.environment
+        region             = local.region
         droplet_count      = 1
-        region             = "blr1"
         vpc_uuid           = module.vpc.id
-        droplet_size       = "s-1vcpu-1gb"
-        image_name         = "ubuntu-18-04-x64"
-        ssh_key            = "ssh-rsa AAAAB3NfWmf2/dUA1KDU= test"
-        monitoring         = false
-        ipv6               = false
-        floating_ip        = true
-        block_storage_size = 5
+        ssh_key            = "ssh-rsa AAAAB3NzaC1yc2EAAAADUA1KDU= test"
         user_data          = file("user-data.sh")
       
         ####firewall
-        allowed_ip    = ["0.0.0.0/0"]
-        allowed_ports = [22, 80]
+        inbound_rules = [
+          {
+            allowed_ip    = ["10.10.0.0/16"]
+            allowed_ports = "22"
+          },
+          {
+            allowed_ip    = ["0.0.0.0/0"]
+            allowed_ports = "80"
+          }
+        ]
       }
   ```

@@ -45,13 +45,13 @@ variable "block_storage_filesystem_label" {
 
 variable "block_storage_filesystem_type" {
   type        = string
-  default     = "xfs"
+  default     = null
   description = "Initial filesystem type (xfs or ext4) for the block storage volume."
 }
 
 variable "block_storage_size" {
   type        = number
-  default     = 0
+  default     = 5
   description = "(Required) The size of the block storage volume in GiB. If updated, can only be expanded."
 }
 
@@ -63,7 +63,7 @@ variable "droplet_count" {
 
 variable "droplet_size" {
   type        = string
-  default     = "micro"
+  default     = "s-1vcpu-1gb"
   description = "the size slug of a droplet size"
 }
 
@@ -75,8 +75,8 @@ variable "floating_ip" {
 
 variable "image_name" {
   type        = string
+  default     = "ubuntu-22-04-x64"
   description = "The image name or slug to lookup."
-  default     = "ubuntu-18-04-x64"
 }
 
 variable "ipv6" {
@@ -151,20 +151,8 @@ variable "enable_firewall" {
   description = "Enable default Security Group with only Egress traffic allowed."
 }
 
-variable "allowed_ports" {
-  type        = list(any)
+variable "inbound_rules" {
+  type        = any
   default     = []
-  description = "List of allowed ingress ports."
-}
-
-variable "protocol" {
-  type        = string
-  default     = "tcp"
-  description = "The protocol. If not icmp, tcp, udp, or all use the."
-}
-
-variable "allowed_ip" {
-  type        = list(any)
-  default     = []
-  description = "List of allowed ip."
+  description = "List of objects that represent the configuration of each inbound rule."
 }
