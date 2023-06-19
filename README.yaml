@@ -41,11 +41,9 @@ usage : |-
         name               = local.name
         environment        = local.environment
         region             = local.region
-        droplet_count      = 1
         vpc_uuid           = module.vpc.id
         ssh_key            = "ssh-rsa AAAAB3NzaC1yc2EAAAADUA1KDU= test"
         user_data          = file("user-data.sh")
-      
         ####firewall
         inbound_rules = [
           {

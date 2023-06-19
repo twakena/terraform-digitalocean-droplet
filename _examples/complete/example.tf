@@ -21,15 +21,13 @@ module "vpc" {
 ## Droplet module call
 ##------------------------------------------------
 module "droplet" {
-  source        = "./../../"
-  name          = local.name
-  environment   = local.environment
-  region        = local.region
-  droplet_count = 1
-  vpc_uuid      = module.vpc.id
-  ssh_key       = "ssh-rsa AAAAB3NzaC1yc2EAAAADUA1KDU= test"
-  user_data     = file("user-data.sh")
-
+  source      = "./../../"
+  name        = local.name
+  environment = local.environment
+  region      = local.region
+  vpc_uuid    = module.vpc.id
+  ssh_key     = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAB= test"
+  user_data   = file("user-data.sh")
   ####firewall
   inbound_rules = [
     {

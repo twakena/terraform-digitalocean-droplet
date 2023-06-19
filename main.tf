@@ -101,6 +101,7 @@ resource "digitalocean_floating_ip_assignment" "main" {
 ##--------------------------------------------------------------------------------------------------------------------------
 
 #tfsec:ignore:digitalocean-compute-no-public-egress    ## The port is exposed for ingress from the internet, by default we use  ["0.0.0.0/0", "::/0"].
+#tfsec:ignore:digitalocean-compute-no-public-ingress   ## because by default we use ["0.0.0.0/0"] cidr for 80 and 443 post, can't use on prod env.
 resource "digitalocean_firewall" "default" {
   depends_on = [digitalocean_droplet.main]
   count      = var.enable_firewall == true && var.enabled == true ? 1 : 0
