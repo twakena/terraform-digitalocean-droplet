@@ -99,7 +99,7 @@ variable "resize_disk" {
 
 variable "user_data" {
   type        = string
-  default     = ""
+  default     = null
   description = "(Optional) A string of the desired User Data for the Droplet."
 }
 
