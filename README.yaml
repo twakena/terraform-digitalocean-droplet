@@ -8,10 +8,10 @@
 name : Terraform Digitalocean Droplet
 
 # License of this project
-license: "MIT"
+license: "APACHE"
 
 # Canonical GitHub repo
-github_repo: clouddrove/terraform-digitalocean-droplet
+github_repo: terraform-do-modules/terraform-digitalocean-droplet
 
 # Badges to display
 badges:
@@ -19,12 +19,12 @@ badges:
     image: "https://img.shields.io/badge/Terraform-v0.15-green"
     url: "https://www.terraform.io"
   - name: "Licence"
-    image: "https://img.shields.io/badge/License-MIT-blue.svg"
+    image: "https://img.shields.io/badge/License-APACHE-blue.svg"
     url: "LICENSE.md"
 
 #  description of this project
 description: |-
-  Provides a DigitalOcean Block Storage volume which can be attached to a Droplet in order to provide expanded storage
+  Terraform module to create Digitalocean droplet service resource on Digitalocean.
 
 # extra content
 include:
@@ -37,20 +37,23 @@ usage : |-
   ```hcl
       module "droplet" {
         source             = "terraform-do-modules/droplet/digitalocean"
-        version            = "0.15.0"
-        name               = "droplet"
-        environment        = "test"
-        label_order        = ["environment", "name"]
-        droplet_count      = 1
-        region             = "bangalore-1"
-        ssh_keys           = [module.ssh_key.fingerprint]
+        version            = "1.0.0"
+        name               = local.name
+        environment        = local.environment
+        region             = local.region
         vpc_uuid           = module.vpc.id
-        droplet_size       = "nano"
-        monitoring         = false
-        private_networking = true
-        ipv6               = false
-        floating_ip        = true
-        block_storage_size = 5
+        ssh_key            = "ssh-rsa AAAAB3NzaC1yc2EAAAADUA1KDU= test"
         user_data          = file("user-data.sh")
+        ####firewall
+        inbound_rules = [
+          {
+            allowed_ip    = ["10.10.0.0/16"]
+            allowed_ports = "22"
+          },
+          {
+            allowed_ip    = ["0.0.0.0/0"]
+            allowed_ports = "80"
+          }
+        ]
       }
   ```
