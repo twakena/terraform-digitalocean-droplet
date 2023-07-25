@@ -1,11 +1,10 @@
-# Description : This Script is used to create Droplet, Volume, Volume Attachment, and floating Ip.
-
 #Module      : Label
 #Description : This terraform module is designed to generate consistent label names and
 #              tags for resources. You can use terraform-labels to implement a strict
 #              naming convention.
 module "labels" {
-  source      = "git::https://github.com/terraform-do-modules/terraform-digitalocean-labels.git?ref=internal-426m"
+  source      = "terraform-do-modules/labels/digitalocean"
+  version     = "1.0.0"
   name        = var.name
   environment = var.environment
   managedby   = var.managedby
@@ -72,7 +71,6 @@ resource "digitalocean_volume" "main" {
 resource "digitalocean_volume_attachment" "main" {
   depends_on = [digitalocean_droplet.main, digitalocean_volume.main]
   count      = var.enabled == true ? var.droplet_count : 0
-
   droplet_id = element(digitalocean_droplet.main[*].id, count.index)
   volume_id  = element(digitalocean_volume.main[*].id, count.index)
 }
@@ -89,8 +87,7 @@ resource "digitalocean_floating_ip" "main" {
 #Description : Provides a DigitalOcean Floating IP to represent a publicly-accessible static IP addresses that can be mapped to one of your Droplets.
 ##---------------------------------------------------------------------------------------------------------------------------------------------------
 resource "digitalocean_floating_ip_assignment" "main" {
-  count = var.floating_ip == true && var.enabled == true ? var.droplet_count : 0
-
+  count      = var.floating_ip == true && var.enabled == true ? var.droplet_count : 0
   ip_address = element(digitalocean_floating_ip.main[*].id, count.index)
   droplet_id = element(digitalocean_droplet.main[*].id, count.index)
   depends_on = [digitalocean_droplet.main, digitalocean_floating_ip.main, digitalocean_volume_attachment.main]
@@ -103,9 +100,8 @@ resource "digitalocean_floating_ip_assignment" "main" {
 #tfsec:ignore:digitalocean-compute-no-public-egress    ## The port is exposed for ingress from the internet, by default we use  ["0.0.0.0/0", "::/0"].
 #tfsec:ignore:digitalocean-compute-no-public-ingress   ## because by default we use ["0.0.0.0/0"] cidr for 80 and 443 port, do not use on prod env.
 resource "digitalocean_firewall" "default" {
-  depends_on = [digitalocean_droplet.main]
-  count      = var.enable_firewall == true && var.enabled == true ? 1 : 0
-
+  depends_on  = [digitalocean_droplet.main]
+  count       = var.enable_firewall == true && var.enabled == true ? 1 : 0
   name        = format("%s-droplet-firewall", module.labels.id)
   droplet_ids = digitalocean_droplet.main[*].id
 

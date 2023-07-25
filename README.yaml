@@ -24,7 +24,7 @@ badges:
 
 #  description of this project
 description: |-
-  Provides a DigitalOcean Block Storage volume which can be attached to a Droplet in order to provide expanded storage
+  Terraform module to create Digitalocean droplet service resource on Digitalocean.
 
 # extra content
 include:
@@ -37,7 +37,7 @@ usage : |-
   ```hcl
       module "droplet" {
         source             = "terraform-do-modules/droplet/digitalocean"
-        version            = "0.15.0"
+        version            = "1.0.0"
         name               = local.name
         environment        = local.environment
         region             = local.region

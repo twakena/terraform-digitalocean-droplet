@@ -1,4 +1,6 @@
-#Module      : Droplet
+# ------------------------------------------------------------------------------
+# Outputs
+# ------------------------------------------------------------------------------
 output "id" {
   value       = digitalocean_droplet.main[*].id
   description = "The ID of the Droplet."
