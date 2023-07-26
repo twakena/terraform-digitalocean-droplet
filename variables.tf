@@ -156,3 +156,27 @@ variable "inbound_rules" {
   default     = []
   description = "List of objects that represent the configuration of each inbound rule."
 }
+variable "outbound_rule" {
+  type = list(object({
+    protocol              = string
+    port_range            = string
+    destination_addresses = list(string)
+  }))
+  default = [
+    {
+      protocol   = "tcp"
+      port_range = "1-65535"
+      destination_addresses = [
+        "0.0.0.0/0",
+      "::/0"]
+    },
+    {
+      protocol   = "udp"
+      port_range = "1-65535"
+      destination_addresses = [
+        "0.0.0.0/0",
+      "::/0"]
+    }
+  ]
+  description = "List of objects that represent the configuration of each inbound rule."
+}
