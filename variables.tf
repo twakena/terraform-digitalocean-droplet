@@ -178,5 +178,5 @@ variable "outbound_rule" {
       "::/0"]
     }
   ]
-  description = "List of objects that represent the configuration of each inbound rule."
+  description = "List of objects that represent the configuration of each outbound rule."
 }
