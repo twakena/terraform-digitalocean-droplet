@@ -114,16 +114,13 @@ resource "digitalocean_firewall" "default" {
     }
   }
 
-  outbound_rule {
-    protocol              = "tcp"
-    port_range            = "1-65535"
-    destination_addresses = ["0.0.0.0/0", "::/0"]
-  }
-
-  outbound_rule {
-    protocol              = "udp"
-    port_range            = "1-65535"
-    destination_addresses = ["0.0.0.0/0", "::/0"]
+  dynamic "outbound_rule" {
+    for_each = var.outbound_rule
+    content {
+      protocol              = outbound_rule.value.protocol
+      port_range            = outbound_rule.value.port_range
+      destination_addresses = outbound_rule.value.destination_addresses
+    }
   }
 
   tags = [
