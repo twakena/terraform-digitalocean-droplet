@@ -5,12 +5,12 @@ on:
       - master
 
 jobs:
-  readme-create:
+  readme:
     name: 'readme-create'
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@1.0.8
+        uses: actions/checkout@master
 
       - name: 'Set up Python 3.7'
         uses: actions/setup-python@v5
@@ -26,11 +26,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'pre-commit check errors'
-        uses: pre-commit/action@v2.0.0
+        uses: pre-commit/action@v3.0.0
         continue-on-error: true
 
       - name: 'pre-commit fix erros'
-        uses: pre-commit/action@v2.0.0
+        uses: pre-commit/action@v3.0.0
         continue-on-error: true
 
       - name: 'push readme'
