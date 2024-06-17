@@ -109,12 +109,6 @@ variable "vpc_uuid" {
   description = "The ID of the VPC where the Droplet will be located."
 }
 
-variable "ssh_keys" {
-  type        = list(string)
-  default     = []
-  description = "SSH key"
-}
-
 variable "key_name" {
   type        = string
   default     = ""
