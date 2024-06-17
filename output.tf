@@ -91,6 +91,7 @@ output "ssh_keys" {
         id         = ssh_key.id
         name       = ssh_key.name
         fingerprint = ssh_key.fingerprint
+        public_key = ssh_key.public_key
       } if var.ssh_keys[key] != null  # Check if the SSH key exists in var.ssh_keys
   }
 }
