@@ -14,10 +14,10 @@ module "labels" {
 ##---------------------------------------------------------------------------------------------------------
 #Description : Provides a DigitalOcean SSH key resource to allow you to manage SSH keys for Droplet access.
 ##---------------------------------------------------------------------------------------------------------
-resource "digitalocean_ssh_key" "default" {
-  count      = var.enabled == true ? 1 : 0
-  name       = var.key_name == "" ? format("%s-key-%s", module.labels.id, (count.index)) : var.key_name
-  public_key = var.ssh_key != "" ? var.ssh_key : file(var.key_path)
+resource "digitalocean_ssh_key" "ssh_keys" {
+  for_each   = var.ssh_keys
+  name       = coalesce(each.key, each.value.name)
+  public_key = each.value.public_key
 }
 
 ##----------------------------------------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ resource "digitalocean_droplet" "main" {
   backups           = var.backups
   monitoring        = var.monitoring
   ipv6              = var.ipv6
-  ssh_keys          = [join("", digitalocean_ssh_key.default[*].id)]
+  ssh_keys          = local.ssh_key_ids
   resize_disk       = var.resize_disk
   user_data         = var.user_data
   vpc_uuid          = var.vpc_uuid
