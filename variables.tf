@@ -184,3 +184,9 @@ variable "ssh_keys" {
   default = {
 }
 }
+variable "tags" {
+  description = "A list of the tags to be applied to this Droplet."
+  type = list
+  default = []
+  
+}

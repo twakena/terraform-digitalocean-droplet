@@ -1,16 +1,3 @@
-#Module      : Label
-#Description : This terraform module is designed to generate consistent label names and
-#              tags for resources. You can use terraform-labels to implement a strict
-#              naming convention.
-module "labels" {
-  source      = "terraform-do-modules/labels/digitalocean"
-  version     = "1.0.1"
-  name        = var.name
-  environment = var.environment
-  managedby   = var.managedby
-  label_order = var.label_order
-}
-
 ##---------------------------------------------------------------------------------------------------------
 #Description : Provides a DigitalOcean SSH key resource to allow you to manage SSH keys for Droplet access.
 ##---------------------------------------------------------------------------------------------------------
@@ -38,12 +25,7 @@ resource "digitalocean_droplet" "main" {
   vpc_uuid          = var.vpc_uuid
   droplet_agent     = var.droplet_agent
   graceful_shutdown = var.graceful_shutdown
-  tags = [
-    format("%s-%s-%s", module.labels.id, "droplet", (count.index)),
-    module.labels.name,
-    module.labels.environment,
-    module.labels.managedby
-  ]
+  tags = var.tags
 }
 
 ##----------------------------------------------------------------------------------------------------------------------------------
@@ -57,12 +39,7 @@ resource "digitalocean_volume" "main" {
   description              = "Block storage for ${element(digitalocean_droplet.main[*].name, count.index)}"
   initial_filesystem_label = var.block_storage_filesystem_label
   initial_filesystem_type  = var.block_storage_filesystem_type
-  tags = [
-    format("%s-%s-%s", module.labels.id, "volume", (count.index)),
-    module.labels.name,
-    module.labels.environment,
-    module.labels.managedby
-  ]
+  tags = var.tags
 }
 
 ##---------------------------------------------------------
@@ -123,9 +100,5 @@ resource "digitalocean_firewall" "default" {
     }
   }
 
-  tags = [
-    module.labels.name,
-    module.labels.environment,
-    module.labels.managedby
-  ]
+tags = var.tags
 }
