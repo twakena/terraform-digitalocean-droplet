@@ -86,12 +86,12 @@ output "price_monthly" {
 output "ssh_keys" {
   description = "SSH keys created in DigitalOcean"
   value = {
-    for key, ssh_key in digitalocean_ssh_key.ssh_keys :   # Using a for loop to iterate over each SSH key resource
-      key => {
-        id         = ssh_key.id
-        name       = ssh_key.name
-        fingerprint = ssh_key.fingerprint
-        public_key = ssh_key.public_key
-      } if var.ssh_keys[key] != null  # Check if the SSH key exists in var.ssh_keys
+    for key, ssh_key in digitalocean_ssh_key.ssh_keys : # Using a for loop to iterate over each SSH key resource
+    key => {
+      id          = ssh_key.id
+      name        = ssh_key.name
+      fingerprint = ssh_key.fingerprint
+      public_key  = ssh_key.public_key
+    } if var.ssh_keys[key] != null # Check if the SSH key exists in var.ssh_keys
   }
 }

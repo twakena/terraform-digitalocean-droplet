@@ -182,11 +182,11 @@ variable "ssh_keys" {
     public_key = optional(string)
   }))
   default = {
-}
+  }
 }
 variable "tags" {
   description = "A list of the tags to be applied to this Droplet."
-  type = list
-  default = []
-  
+  type        = list(any)
+  default     = []
+
 }

@@ -25,7 +25,7 @@ resource "digitalocean_droplet" "main" {
   vpc_uuid          = var.vpc_uuid
   droplet_agent     = var.droplet_agent
   graceful_shutdown = var.graceful_shutdown
-  tags = var.tags
+  tags              = var.tags
 }
 
 ##----------------------------------------------------------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ resource "digitalocean_volume" "main" {
   description              = "Block storage for ${element(digitalocean_droplet.main[*].name, count.index)}"
   initial_filesystem_label = var.block_storage_filesystem_label
   initial_filesystem_type  = var.block_storage_filesystem_type
-  tags = var.tags
+  tags                     = var.tags
 }
 
 ##---------------------------------------------------------
@@ -63,11 +63,12 @@ resource "digitalocean_floating_ip" "main" {
 ##---------------------------------------------------------------------------------------------------------------------------------------------------
 #Description : Provides a DigitalOcean Floating IP to represent a publicly-accessible static IP addresses that can be mapped to one of your Droplets.
 ##---------------------------------------------------------------------------------------------------------------------------------------------------
-resource "digitalocean_floating_ip_assignment" "main" {
+resource "digitalocean_reserved_ip_assignment" "ip_assignment" {
   count      = var.floating_ip == true && var.enabled == true ? var.droplet_count : 0
   ip_address = element(digitalocean_floating_ip.main[*].id, count.index)
   droplet_id = element(digitalocean_droplet.main[*].id, count.index)
   depends_on = [digitalocean_droplet.main, digitalocean_floating_ip.main, digitalocean_volume_attachment.main]
+
 }
 
 ##--------------------------------------------------------------------------------------------------------------------------
@@ -100,5 +101,5 @@ resource "digitalocean_firewall" "default" {
     }
   }
 
-tags = var.tags
+  tags = var.tags
 }
