@@ -65,9 +65,9 @@ resource "digitalocean_reserved_ip" "this" {
 ##---------------------------------------------------------------------------------------------------------------------------------------------------
 resource "digitalocean_reserved_ip_assignment" "ip_assignment" {
   count      = var.floating_ip == true && var.enabled == true ? var.droplet_count : 0
-  ip_address = element(digitalocean_floating_ip.main[*].id, count.index)
+  ip_address = element(digitalocean_reserved_ip.this[*].ip_address, count.index)
   droplet_id = element(digitalocean_droplet.main[*].id, count.index)
-  depends_on = [digitalocean_droplet.main, digitalocean_floating_ip.main, digitalocean_volume_attachment.main]
+  depends_on = [digitalocean_droplet.main, digitalocean_reserved_ip.this, digitalocean_volume_attachment.main]
 
 }
 
