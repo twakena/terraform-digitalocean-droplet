@@ -55,7 +55,7 @@ resource "digitalocean_volume_attachment" "main" {
 ##---------------------------------------------------------------------------------------------------------------------------------------------------
 #Description : Provides a DigitalOcean Floating IP to represent a publicly-accessible static IP addresses that can be mapped to one of your Droplets.
 ##---------------------------------------------------------------------------------------------------------------------------------------------------
-resource "digitalocean_floating_ip" "main" {
+resource "digitalocean_reserved_ip" "this" {
   count  = var.floating_ip == true && var.enabled == true ? var.droplet_count : 0
   region = var.region
 }

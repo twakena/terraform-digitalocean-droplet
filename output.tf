@@ -95,3 +95,10 @@ output "ssh_keys" {
     } if var.ssh_keys[key] != null # Check if the SSH key exists in var.ssh_keys
   }
 }
+
+
+output "public_ip_address" {
+  description = "The IP Address of the resource"
+  value = try(digitalocean_reserved_ip.this[0].ip_address, null)
+
+}
